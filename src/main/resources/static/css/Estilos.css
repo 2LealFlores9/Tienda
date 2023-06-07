@@ -14,13 +14,35 @@
 }
 
 .parrafo2 {
- 
+
     color: blue;
-    
+
 }
 
 p{
-    
+
     color: green;
+
+}
+
+.fondo{
+    background-color: cadetblue;
+    background-repeat: repeat-x;
+    background-position: 0 0;
+}
+
+a:hover {
+    
+    color: white;
+    background-color: black;
+    font-size: 25px;
+    transition: 0.09s;
+    
+}
+
+a:active{
+    
+    color: aqua;
+    background-color: violet;
     
 }
