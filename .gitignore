@@ -31,3 +31,4 @@ build/
 
 ### VS Code ###
 .vscode/
+/src/main/resources/firebase/techshop-c82e0-firebase-adminsdk-uoac1-312db16ae2.json
