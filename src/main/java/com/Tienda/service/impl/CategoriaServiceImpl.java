@@ -13,21 +13,20 @@ public class CategoriaServiceImpl implements CategoriaService {
 
     @Autowired
     private CategoriaDao categoriaDao;
-
+    
     @Override
     @Transactional(readOnly = true)
     public List<Categoria> getcategorias(boolean activos) {
-        List<Categoria> lista = categoriaDao.findAll();
-
-        if (activos) {
-            //Para remover las categorias donde activo = faalso
-            lista.removeIf(x -> x.isActivo());
-        }
-
-        return lista;
+       List<Categoria> lista = categoriaDao.findAll();
+       
+       if(activos) {
+           //Para remover las categorias donde activo = faalso
+           lista.removeIf(x-> x.isActivo());
+       }
+       
+       return lista;
     }
-
-    @Override
+  @Override
     @Transactional(readOnly = true)
     public Categoria getCategoria(Categoria categoria) {
         return categoriaDao.findById(categoria.getIdCategoria()).orElse(null);
@@ -43,5 +42,10 @@ public class CategoriaServiceImpl implements CategoriaService {
     @Transactional
     public void delete(Categoria categoria) {
         categoriaDao.delete(categoria);
+    }
+
+    @Override
+    public List<Categoria> getCategorias(boolean b) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

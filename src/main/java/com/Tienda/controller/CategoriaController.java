@@ -16,41 +16,40 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 
-
 @RequestMapping("/categoria")
 @Slf4j
 @Controller
 public class CategoriaController {
     
     @Autowired
-    CategoriaService categoriaService; 
-    
+    private CategoriaService categoriaService;
+
+    @Autowired
+    private FirebaseStorageServiceImpl firebaseStorageService;
+
     @GetMapping("/listado")
-    public String inicio(Model model) {
-        log.info("Consumiendo el recurso de /categoria/listado");
-        List<Categoria> categorias = categoriaService.getcategorias(false); 
-        
+    public String page(Model model) {
+        log.info("Consumo del recurso /categoria/listado");
+        List<Categoria> categorias = categoriaService.getCategorias(false);
         model.addAttribute("categorias", categorias);
-        model.addAttribute("totalCategorias", categorias.size());      
-        return "/categorias/listado";
+        model.addAttribute("totalCategorias", categorias.size());
+        return "/categoria/listado";
     }
-       @GetMapping("/nuevo")
+
+    @GetMapping("/nuevo")
     public String categoriaNuevo(Categoria categoria) {
         return "/categoria/modifica";
     }
 
-    @Autowired
-    private FirebaseStorageServiceImpl firebaseStorageService;
-    
     @PostMapping("/guardar")
     public String categoriaGuardar(Categoria categoria,
-            @RequestParam("imagenFile") MultipartFile imagenFile) {        
+            @RequestParam("imagenFile") MultipartFile imagenFile) {
         if (!imagenFile.isEmpty()) {
             categoriaService.save(categoria);
             categoria.setRutaImagen(
                     firebaseStorageService.cargaImagen(
-                            imagenFile, 
-                            "categoria", 
+                            imagenFile,
+                            "categoria",
                             categoria.getIdCategoria()));
         }
         categoriaService.save(categoria);

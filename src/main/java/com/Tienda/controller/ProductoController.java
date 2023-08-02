@@ -6,7 +6,6 @@ import com.Tienda.service.CategoriaService;
 import com.Tienda.service.ProductoService;
 import com.Tienda.service.impl.FirebaseStorageServiceImpl;
 import java.util.List;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,44 +20,43 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/producto")
-@Slf4j
 public class ProductoController {
 
     @Autowired
     ProductoService productoService;
 
     @Autowired
-    CategoriaService  categoriaService;   
+    CategoriaService categoriaService;
 
     @Autowired
     private FirebaseStorageServiceImpl firebaseStorageService;
 
-    
-    @GetMapping("/listado")
-    public String inicio(Model model) {
-        log.info("Consumiendo el recurso de /producto/listado");
-        List<Producto> productos = productoService.getproductos(false);  
-        List<Categoria> categorias = categoriaService.getcategorias(true);
+    @RequestMapping("/listado")
+    public String listado(Model model) {
+        List<Producto> productos = productoService.getProductos(false);
+        List<Categoria> categorias = categoriaService.getCategorias(true);
+
         model.addAttribute("productos", productos);
         model.addAttribute("categorias", categorias);
-        model.addAttribute("totalProductos", productos.size());   
-        return "/productos/listado";
+        model.addAttribute("totalProductos", productos.size());
+        
+        return "/producto/listado";
     }
-       @GetMapping("/nuevo")
+    
+     @GetMapping("/nuevo")
     public String productoNuevo(Producto producto) {
         return "/producto/modifica";
     }
 
-    
     @PostMapping("/guardar")
     public String productoGuardar(Producto producto,
-            @RequestParam("imagenFile") MultipartFile imagenFile) {        
+            @RequestParam("imagenFile") MultipartFile imagenFile) {
         if (!imagenFile.isEmpty()) {
             productoService.save(producto);
             producto.setRutaImagen(
                     firebaseStorageService.cargaImagen(
-                            imagenFile, 
-                            "producto", 
+                            imagenFile,
+                            "producto",
                             producto.getIdProducto()));
         }
         productoService.save(producto);
@@ -66,8 +64,8 @@ public class ProductoController {
     }
 
     @GetMapping("/eliminar/{idProducto}")
-    public String productoEliminar(Producto producto) {
-        productoService.delete(producto);
+    public String productoEliminar(Categoria producto) {
+        categoriaService.delete(producto);
         return "redirect:/producto/listado";
     }
 

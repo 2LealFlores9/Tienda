@@ -4,17 +4,26 @@ import com.Tienda.domain.Producto;
 import java.util.List;
 
 public interface ProductoService {
-    //Método de retorno de categorías 
+    //Metodo para consultar las categorias. El parametro define si se muestran solo las activas o todas
+    public List<Producto> getProductos(boolean activos);
     
-    public List<Producto> getproductos(boolean activos);
-    // Se obtiene un Producto, a partir del id de un producto
+    // Se obtiene una categoria por su ID
     public Producto getProducto(Producto producto);
     
-    // Se inserta un nuevo producto si el id del producto esta vacío
-    // Se actualiza un producto si el id del producto NO esta vacío
+    //Insertar, se inserta cuando el id categoria esta vacio (valor 0 o null)
+    //Modificar, se modifica cuando el id categoria no esta vacio
     public void save(Producto producto);
     
-    // Se elimina el producto que tiene el id pasado por parámetro
+    //Se elimina un registro por su idProducto
     public void delete(Producto producto);
+    
+    // Lista de productos con precio entre ordendados por descripción ConsultaAmpliada
+    public List<Producto> findByPrecioBetweenOrderByDescripcion(double precioInf, double precioSup);
+    
+    //Lista de productos utilizando consultas con JPQL    
+    public List<Producto> metodoJPQL(double precioInf, double precioSup);
+    
+    //Lista de productos utilizando consultas con SQL Nativo
+    public List<Producto> metodoNativo(double precioInf, double precioSup);
 
 }

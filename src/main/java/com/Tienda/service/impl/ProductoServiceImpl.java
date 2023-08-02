@@ -12,19 +12,18 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProductoServiceImpl implements ProductoService {
 
     @Autowired
-    private ProductoDao productoDao;
+    ProductoDao productoDao;
 
     @Override
     @Transactional(readOnly = true)
-    public List<Producto> getproductos(boolean activos) {
-        List<Producto> lista = productoDao.findAll();
+    public List<Producto> getProductos(boolean activos) {
+        List<Producto> productos = productoDao.findAll();
 
         if (activos) {
-            //Para remover las productos donde activo = faalso
-            lista.removeIf(x -> x.isActivo());
+            productos.removeIf(x -> !x.isActivo());
         }
 
-        return lista;
+        return productos;
     }
 
     @Override
@@ -43,5 +42,24 @@ public class ProductoServiceImpl implements ProductoService {
     @Transactional
     public void delete(Producto producto) {
         productoDao.delete(producto);
+    }
+
+    // Lista de productos con precio entre ordendados por descripción ConsultaAmpliada
+    @Override
+    @Transactional(readOnly = true)
+    public List<Producto> findByPrecioBetweenOrderByDescripcion(double precioInf, double precioSup) {
+        return productoDao.findByPrecioBetweenOrderByDescripcion(precioInf, precioSup);
+    }
+    
+    @Override
+    @Transactional(readOnly=true)    
+    public List<Producto> metodoJPQL(double precioInf, double precioSup) {
+        return productoDao.metodoJPQL(precioInf, precioSup);
+    }
+    
+    @Override
+    @Transactional(readOnly=true)    
+    public List<Producto> metodoNativo(double precioInf, double precioSup) {
+        return productoDao.metodoNativo(precioInf, precioSup);
     }
 }
